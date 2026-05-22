@@ -3,59 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة ختمة القرآن الكريم</title>
+    <title>ختمة - النظام الاحترافي</title>
+    <!-- مكتبة البوتستراب -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <!-- مكتبة الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-light">
 
     <!-- شريط الأخبار -->
-    <div id="newsTickerContainer" class="ticker-wrap bg-success text-white d-none">
+    <div id="newsTickerContainer" class="ticker-wrap text-white d-none" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);">
         <div class="ticker">
             <div class="ticker__item" id="newsText">جاري تحميل الأخبار...</div>
         </div>
     </div>
 
-    <!-- شريط التنقل (الناف بار) -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: #1a1a2e;">
         <div class="container">
-            <a class="navbar-brand" href="#">📖 نظام الختمة</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-warning d-none" id="adminLink" href="admin.html">لوحة الإدارة</a>
-                    </li>
-                </ul>
-                <button id="logoutBtn" class="btn btn-outline-danger btn-sm d-none">تسجيل الخروج</button>
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-book-open text-warning me-2"></i>نظام الختمة</a>
+            <div class="d-flex gap-3 align-items-center">
+                <!-- صورة واسم المستخدم بعد الدخول -->
+                <div id="userProfileBadge" class="d-none text-white d-flex align-items-center gap-2">
+                    <img id="navUserImage" src="default-avatar.png" class="rounded-circle" width="35" height="35" style="object-fit: cover;">
+                    <span id="navUserName" class="small fw-bold"></span>
+                </div>
+                <a class="btn btn-outline-warning btn-sm d-none fw-bold" id="adminLink" href="admin.html"><i class="fas fa-cog"></i> الإدارة</a>
+                <button id="logoutBtn" class="btn btn-danger btn-sm d-none"><i class="fas fa-sign-out-alt"></i></button>
             </div>
         </div>
     </nav>
 
     <div class="container mt-5">
-        <!-- قسم تسجيل الدخول -->
+        <!-- منطقة تسجيل الدخول وإنشاء الحساب -->
         <div id="authSection" class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h3 class="card-title text-center mb-4">تسجيل الدخول</h3>
-                        <input type="email" id="emailInput" class="form-control mb-3" placeholder="البريد الإلكتروني">
-                        <input type="password" id="passwordInput" class="form-control mb-3" placeholder="كلمة المرور">
-                        <button id="loginBtn" class="btn btn-primary w-100 mb-2">دخول</button>
-                        <p class="text-center text-muted small">هذا النظام مخصص لأعضاء المجموعة فقط.</p>
+            <div class="col-md-6 col-lg-5">
+                
+                <!-- أزرار التبديل -->
+                <div class="d-flex justify-content-center mb-4 gap-2">
+                    <button id="showLoginBtn" class="btn btn-primary px-4 fw-bold shadow-sm">تسجيل الدخول</button>
+                    <button id="showSignupBtn" class="btn btn-outline-primary px-4 fw-bold shadow-sm">حساب جديد</button>
+                </div>
+
+                <!-- فورم تسجيل الدخول (الافتراضي) -->
+                <div id="loginForm" class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4 fw-bold text-primary">أهلاً بك مجدداً</h3>
+                        <div class="form-floating mb-3">
+                            <input type="email" id="loginEmail" class="form-control" placeholder="name@example.com">
+                            <label>البريد الإلكتروني</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" id="loginPassword" class="form-control" placeholder="Password">
+                            <label>كلمة المرور</label>
+                        </div>
+                        <button id="loginBtn" class="btn btn-primary w-100 py-2 fw-bold text-uppercase rounded-3 shadow-sm">تسجيل الدخول</button>
                     </div>
                 </div>
+
+                <!-- فورم إنشاء الحساب (مخفي) -->
+                <div id="signupForm" class="card shadow-lg border-0 rounded-4 d-none">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4 fw-bold text-success">إنشاء حساب جديد</h3>
+                        
+                        <div class="text-center mb-4">
+                            <!-- زر اختيار الصورة -->
+                            <img id="previewImage" src="https://via.placeholder.com/100" class="rounded-circle shadow-sm mb-2" width="100" height="100" style="object-fit: cover; cursor: pointer;" onclick="document.getElementById('signupImage').click()">
+                            <input type="file" id="signupImage" class="d-none" accept="image/*">
+                            <p class="small text-muted mb-0">اضغط لاختيار صورتك</p>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" id="signupName" class="form-control" placeholder="الاسم ثلاثي">
+                            <label>الاسم الكامل</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" id="signupEmail" class="form-control" placeholder="name@example.com">
+                            <label>البريد الإلكتروني</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" id="signupPassword" class="form-control" placeholder="Password">
+                            <label>كلمة المرور (6 أحرف على الأقل)</label>
+                        </div>
+                        <button id="signupBtn" class="btn btn-success w-100 py-2 fw-bold rounded-3 shadow-sm">إنشاء الحساب</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- قسم لوحة الختمات -->
+        <!-- منطقة الختمات -->
         <div id="dashboardSection" class="d-none">
-            <h2 class="mb-4 border-bottom pb-2">الختمات المتاحة</h2>
+            <h2 class="mb-4 pb-2 border-bottom fw-bold text-dark"><i class="fas fa-quran text-success me-2"></i>الختمات المتاحة</h2>
             <div id="khatmasContainer" class="row">
-                <!-- الختمات ستظهر هنا -->
+                <!-- ستظهر الختمات هنا -->
             </div>
         </div>
     </div>
