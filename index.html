@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ختمة - النظام الاحترافي</title>
-    <!-- مكتبة البوتستراب -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-    <!-- مكتبة الأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="style.css">
@@ -25,9 +23,8 @@
         <div class="container">
             <a class="navbar-brand fw-bold" href="#"><i class="fas fa-book-open text-warning me-2"></i>نظام الختمة</a>
             <div class="d-flex gap-3 align-items-center">
-                <!-- صورة واسم المستخدم بعد الدخول -->
                 <div id="userProfileBadge" class="d-none text-white d-flex align-items-center gap-2">
-                    <img id="navUserImage" src="default-avatar.png" class="rounded-circle" width="35" height="35" style="object-fit: cover;">
+                    <img id="navUserImage" src="https://via.placeholder.com/35" class="rounded-circle" width="35" height="35" style="object-fit: cover; border: 2px solid #ffc107;">
                     <span id="navUserName" class="small fw-bold"></span>
                 </div>
                 <a class="btn btn-outline-warning btn-sm d-none fw-bold" id="adminLink" href="admin.html"><i class="fas fa-cog"></i> الإدارة</a>
@@ -41,13 +38,12 @@
         <div id="authSection" class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
                 
-                <!-- أزرار التبديل -->
                 <div class="d-flex justify-content-center mb-4 gap-2">
                     <button id="showLoginBtn" class="btn btn-primary px-4 fw-bold shadow-sm">تسجيل الدخول</button>
                     <button id="showSignupBtn" class="btn btn-outline-primary px-4 fw-bold shadow-sm">حساب جديد</button>
                 </div>
 
-                <!-- فورم تسجيل الدخول (الافتراضي) -->
+                <!-- فورم تسجيل الدخول -->
                 <div id="loginForm" class="card shadow-lg border-0 rounded-4">
                     <div class="card-body p-5">
                         <h3 class="text-center mb-4 fw-bold text-primary">أهلاً بك مجدداً</h3>
@@ -63,13 +59,12 @@
                     </div>
                 </div>
 
-                <!-- فورم إنشاء الحساب (مخفي) -->
+                <!-- فورم إنشاء الحساب -->
                 <div id="signupForm" class="card shadow-lg border-0 rounded-4 d-none">
                     <div class="card-body p-5">
                         <h3 class="text-center mb-4 fw-bold text-success">إنشاء حساب جديد</h3>
                         
                         <div class="text-center mb-4">
-                            <!-- زر اختيار الصورة -->
                             <img id="previewImage" src="https://via.placeholder.com/100" class="rounded-circle shadow-sm mb-2" width="100" height="100" style="object-fit: cover; cursor: pointer;" onclick="document.getElementById('signupImage').click()">
                             <input type="file" id="signupImage" class="d-none" accept="image/*">
                             <p class="small text-muted mb-0">اضغط لاختيار صورتك</p>
@@ -97,9 +92,7 @@
         <!-- منطقة الختمات -->
         <div id="dashboardSection" class="d-none">
             <h2 class="mb-4 pb-2 border-bottom fw-bold text-dark"><i class="fas fa-quran text-success me-2"></i>الختمات المتاحة</h2>
-            <div id="khatmasContainer" class="row">
-                <!-- ستظهر الختمات هنا -->
-            </div>
+            <div id="khatmasContainer" class="row"></div>
         </div>
     </div>
 
