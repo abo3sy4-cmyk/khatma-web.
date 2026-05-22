@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة ختمة القرآن الكريم</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <!-- شريط الأخبار -->
+    <div id="newsTickerContainer" class="ticker-wrap bg-success text-white d-none">
+        <div class="ticker">
+            <div class="ticker__item" id="newsText">جاري تحميل الأخبار...</div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل (الناف بار) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">📖 نظام الختمة</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-warning d-none" id="adminLink" href="admin.html">لوحة الإدارة</a>
+                    </li>
+                </ul>
+                <button id="logoutBtn" class="btn btn-outline-danger btn-sm d-none">تسجيل الخروج</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- قسم تسجيل الدخول -->
+        <div id="authSection" class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">تسجيل الدخول</h3>
+                        <input type="email" id="emailInput" class="form-control mb-3" placeholder="البريد الإلكتروني">
+                        <input type="password" id="passwordInput" class="form-control mb-3" placeholder="كلمة المرور">
+                        <button id="loginBtn" class="btn btn-primary w-100 mb-2">دخول</button>
+                        <p class="text-center text-muted small">هذا النظام مخصص لأعضاء المجموعة فقط.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم لوحة الختمات -->
+        <div id="dashboardSection" class="d-none">
+            <h2 class="mb-4 border-bottom pb-2">الختمات المتاحة</h2>
+            <div id="khatmasContainer" class="row">
+                <!-- الختمات ستظهر هنا -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
