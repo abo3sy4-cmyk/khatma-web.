@@ -46,14 +46,15 @@ document.getElementById('signupImage').addEventListener('change', function(e) {
     }
 });
 
-// إنشاء حساب
+// إنشاء حساب (تعديل جعل الصورة اختيارية)
 document.getElementById('signupBtn').addEventListener('click', async () => {
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const pass = document.getElementById('signupPassword').value;
     
-    if(!name || !email || !pass || !selectedImageFile) {
-        Swal.fire('تنبيه', 'يجب تعبئة كل الحقول واختيار صورة شخصية', 'warning'); return;
+    // شلنا الصورة من الشرط عشان لو مش موجودة يكمل عادي
+    if(!name || !email || !pass) {
+        Swal.fire('تنبيه', 'يجب تعبئة الاسم والبريد وكلمة المرور', 'warning'); return;
     }
 
     const btn = document.getElementById('signupBtn');
@@ -63,14 +64,21 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCredential.user;
-        const storageRef = ref(storage, `users/${user.uid}`);
-        await uploadBytes(storageRef, selectedImageFile);
-        const photoURL = await getDownloadURL(storageRef);
+        
+        let photoURL = ""; // مسار الصورة فاضي بشكل افتراضي
+        
+        // لو المستخدم اختار صورة، نرفعها ونجيب الرابط بتاعها
+        if (selectedImageFile) {
+            const storageRef = ref(storage, `users/${user.uid}`);
+            await uploadBytes(storageRef, selectedImageFile);
+            photoURL = await getDownloadURL(storageRef);
+        }
 
+        // حفظ بيانات المستخدم
         await setDoc(doc(db, "users", user.uid), {
             name: name,
             email: email,
-            photoURL: photoURL,
+            photoURL: photoURL, // هتكون يا إما رابط الصورة أو نص فاضي
             role: "user"
         });
 
@@ -87,6 +95,11 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
 document.getElementById('loginBtn').addEventListener('click', () => {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
+    
+    if(!email || !password) {
+        Swal.fire('تنبيه', 'يجب تعبئة البريد وكلمة المرور', 'warning'); return;
+    }
+
     const btn = document.getElementById('loginBtn');
     btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> جاري الدخول...';
     btn.disabled = true;
@@ -119,7 +132,12 @@ onAuthStateChanged(auth, async (user) => {
             // تحديث الشريط العلوي
             document.getElementById('userProfileBadge').classList.remove('d-none');
             document.getElementById('navUserName').innerText = currentUserData.name;
-            if(currentUserData.photoURL) document.getElementById('navUserImage').src = currentUserData.photoURL;
+            // لو عنده صورة حطها، لو معندوش حط صورة افتراضية
+            if(currentUserData.photoURL) {
+                document.getElementById('navUserImage').src = currentUserData.photoURL;
+            } else {
+                document.getElementById('navUserImage').src = 'https://via.placeholder.com/35?text=U';
+            }
             
             if (currentUserData.role === 'admin') document.getElementById('adminLink').classList.remove('d-none');
             else document.getElementById('adminLink').classList.add('d-none');
@@ -177,7 +195,9 @@ function listenToKhatmas() {
                     disabled = "disabled"; onClick = "";
                 } else if (part.status === "booked") {
                     btnClass = "btn-secondary text-white part-btn"; 
-                    btnContent = `<span>الجزء ${part.partNumber}</span><img src="${part.userPhoto || 'https://via.placeholder.com/30'}" class="user-avatar-btn" title="${part.userName}">`;
+                    // لو عنده صورة هتتعرض، لو معندوش هتتعرض صورة افتراضية عليها حرف
+                    const userPic = part.userPhoto ? part.userPhoto : 'https://via.placeholder.com/30?text=U';
+                    btnContent = `<span>الجزء ${part.partNumber}</span><img src="${userPic}" class="user-avatar-btn" title="${part.userName}">`;
                     disabled = "disabled"; onClick = "";
                 }
 
@@ -210,7 +230,7 @@ window.requestPart = async (khatmaId, khatmaTitle, partNumber) => {
                 parts[partNumber - 1].status = "pending";
                 await updateDoc(khatmaRef, { parts: parts });
 
-                Swal.fire('تم', 'تم إرسال طلبك للأدمن.', 'success');
+                Swal.fire('تم الإرسال', 'تم إرسال طلبك للأدمن، في انتظار الموافقة.', 'success');
             } catch (error) { Swal.fire('خطأ', error.message, 'error'); }
         }
     });
